@@ -1,0 +1,95 @@
+                                    MongoDB (used to store large amount of  data permanently )
+                        -------------------------------------------------------------------------------------
+
+
+1. Diffrenc b/w SQL and MongoDB
+
+  
+                       SQL                                                  MongoDB
+          ----------------------------------------           ----------------------------------------
+
+          - Relational DBMS                                  - Document Oriented NoSQL DB
+
+          - Store in Table with Rows & Columns               - Collection of JSON Document
+
+          - Uses fixed schema                                - It use dynamic schema
+
+          - used to optimise complex joins and               - used to optimise the scalability and
+            transactions                                       performance
+           
+          - Support rich set of data types                   - supports limited set of data types
+              declarative query language
+
+          - ACID (atomicity,consistency,isolation            - NoSQL based on CAP (consistency,availability
+            ,durability)property                               and partition tolerance) property
+          
+          - Uses traditional business application            - used in big data and real time web application
+
+
+2. commands in MongoDB
+
+          - show database        : display all dbs                                                        : show databases
+          - use db-name          : redirect to particular database                                        : use projectFair
+          - show Collections     : display all collections                                                : show collections
+          - find()               : to get all Documents from a Collection                                 : db.users.find()
+          - findOne(argument)    : to get all Documents which satisfy the condition else return null      : db.users.findOne({email:'latha@gmail.com',password:'latha123'})
+          - limit(count)         : to limit Document while reading from db                                : db.users.find().limit(2)
+          - sort(argument)       : to get sorted data  in Ascending order                                 : db.users.find().sort({username:1})   Ascending Order
+                                 : to get sorted data  in Descending order                                : db.users.find().sort({username:-1})  Descending Order
+          - insertMany(argument) : to insert more document at the same time                               : db.users.insertMany([{uname:"kannan",age:26,balance:500000,debt:34000},{uname:"jo",age:23,balance:450000,debt:67000}])
+          - insertOne(argument)  : to insert single document at a time                                    : db.users.insertOne({uname:"prakash",age:60,address:{city:"eranakulam",zipcode:7890},hobbies:["gaming","dancing","drawing"]})
+          - countDocuments()     : to get the count of documents                                          :db.users.countDocuments()
+          -
+          - Querying commands    :
+                    
+                    - $gt / gte / lt / lte                                     : db.users.find({age:{$gt:22,$lt:26}})
+                    - $and / $or                                               : db.users.find({$or:[{uname:"jo"},{uname:"kannan"}]})
+                    - $eq / $ne
+                    - $in / $nin
+                    - $exists       : to get an existing key(we have two 
+                                      keys username and uname to get only       : db.users.find({uname:{$exists:true}})
+                                      uname we use exists)     
+                    - $expr         : to compare two keys                       : db.users.find({$expr:{$lt:["$debt","$balance"]}})
+
+
+> To get the details of person whose age is 23    :   db.users.find({age:23})
+
+> To update a person's age from 23 to 24          :   db.users.updateMany({age:23},{$set:{age:24}})
+       - $set is used to update the value
+       - updateMany have 2 arguments 
+                - current value
+                - new value to update
+> To increment the age of a person                : db.users.updateOne({uname:'kannan'},{$inc:{age:3}})
+       - $inc is used instead of $set
+
+> To push value in an array                       : db.users.updateOne({uname:'prakash'},{$push:{hobbies:'singing'}})
+   we use $push
+
+> To delete a value from an array                 : db.users.updateOne({uname:'prakash'},{$pull:{hobbies:'singing'}})
+   we use $pull
+
+> To delete a person from database                : db.users.deleteOne({uname:'prakash'})
+
+> To delete multiple people from database         : db.users.deleteMany({uname:{$exists:true}})
+
+
+
+3. Aggregation  : we can join the data            : db.users.aggregate({$lookup:{from:'projects',localField:'_id',foreignField:'userId',as:'userProjects'}})
+
+
+
+4. Mongoose : MongoDB ODM(object database modelling)->
+
+            - used to translate the code and its representation from mongodb to node js 
+            - Advantages of Mongoose module:
+
+                  1. Collection validation of the MongoDB database can be done easily.
+                  2. Predefined Structure can be implemented on the collection.
+                  3. Constraints can be applied to documents of collections using Mongoose.
+
+.env->
+
+      database connect cheyyanm  (mongodb and node )    : DATABASE = mongodb+srv://jyothiprakashthundil:mern@cluster0.ns3vphf.mongodb.net/projectFair?retryWrites=true&w=majority
+     
+
+
